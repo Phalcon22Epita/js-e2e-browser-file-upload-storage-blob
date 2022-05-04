@@ -71,5 +71,38 @@ const uploadFileToBlob = async (file: File | null): Promise<string[]> => {
 };
 // </snippet_uploadFileToBlob>
 
-export default uploadFileToBlob;
+const uploadFileToAzureFunction = async (file: File | null): Promise<string> => {
+	if (!file) return '';
+	
+	 const handleUpload = async (file: File) => {
+		const buffer = await file.arrayBuffer();
+		let byteArray = new Int8Array(buffer);
+		return byteArray;
+	}	
+
+	const binaryFile = await handleUpload(file);
+	
+	const upload = (file: File) : Promise<string> => {
+	  return fetch('https://tribes-function.azurewebsites.net/api/HttpTrigger1?code=rETEnxRk4xVJsZI8P5onrAGtc_QJDJowwjKEpPyftuArAzFuyIbFqg==', { // Your POST endpoint
+		method: 'POST',
+		headers: {
+		  // Content-Type may need to be completely **omitted**
+		  // or you may need something
+		  "Content-Type": "application/octet-stream"
+		},
+		body: binaryFile // This is your file object
+	  }).then(
+		response => response.text() // if the response is a JSON object
+	  ).then(
+		success => success // Handle the success response object
+	  ).catch(
+		error => "" // Handle the error response object
+	  );
+	};
+	
+	return upload(file);
+};
+
+/*export default uploadFileToBlob;*/
+export default uploadFileToAzureFunction;
 

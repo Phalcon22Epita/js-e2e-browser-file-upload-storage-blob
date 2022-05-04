@@ -2,13 +2,15 @@
 
 import React, { useState } from 'react';
 import Path from 'path';
-import uploadFileToBlob, { isStorageConfigured } from './azure-storage-blob';
+/*import uploadFileToBlob, { isStorageConfigured } from './azure-storage-blob';*/
+import uploadFileToAzureFunction, { isStorageConfigured } from './azure-storage-blob';
 
 const storageConfigured = isStorageConfigured();
 
 const App = (): JSX.Element => {
   // all blobs in container
   const [blobList, setBlobList] = useState<string[]>([]);
+  const [probas, setProbas] = useState('');
 
   // current file to upload into container
   const [fileSelected, setFileSelected] = useState(null);
@@ -27,11 +29,14 @@ const App = (): JSX.Element => {
     setUploading(true);
 
     // *** UPLOAD TO AZURE STORAGE ***
-    const blobsInContainer: string[] = await uploadFileToBlob(fileSelected);
+    /*const blobsInContainer: string[] = await uploadFileToBlob(fileSelected);
 
     // prepare UI for results
-    setBlobList(blobsInContainer);
-
+    setBlobList(blobsInContainer);*/
+	
+	// *** SEND IMG TO AZURE FUNCTION ***
+	const response : string = await uploadFileToAzureFunction(fileSelected);
+	setProbas(response);
     // reset state/form
     setFileSelected(null);
     setUploading(false);
@@ -46,7 +51,7 @@ const App = (): JSX.Element => {
         Upload!
           </button>
     </div>
-  )
+  );
 
   // display file name and image
   const DisplayImagesFromContainer = () => (
@@ -67,6 +72,12 @@ const App = (): JSX.Element => {
       </ul>
     </div>
   );
+  
+  const DisplayProbas = () => (
+	<div>
+	<span>{probas}</span>
+	</div>
+  );
 
   return (
     <div>
@@ -76,6 +87,8 @@ const App = (): JSX.Element => {
       <hr />
       {storageConfigured && blobList.length > 0 && DisplayImagesFromContainer()}
       {!storageConfigured && <div>Storage is not configured.</div>}
+	  {probas !== '' && DisplayProbas()}
+		  
     </div>
   );
 };
