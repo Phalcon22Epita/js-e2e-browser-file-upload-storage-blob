@@ -73,9 +73,18 @@ const App = (): JSX.Element => {
     </div>
   );
   
+  const extractProba = () : string => {
+	  var test = "";
+	  const probList = JSON.parse(probas);
+	  probList.forEach((elt : any) => test += elt["tagName"] + ': ' + (Math.round(elt["probability"] * 100)) + '%' + '\n');
+	  return test;
+  };
+  
   const DisplayProbas = () => (
 	<div>
-	<span>{probas}</span>
+	  <span>
+	  {extractProba()}
+	  </span>
 	</div>
   );
 
