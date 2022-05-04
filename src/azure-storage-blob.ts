@@ -72,7 +72,7 @@ export const isStorageConfigured = () => {
 };*/
 // </snippet_uploadFileToBlob>
 
-const uploadFileToAzureFunction = async (file: File | null): Promise<string> => {
+const uploadFileToAzureFunctionEmotion = async (file: File | null): Promise<string> => {
 	if (!file) return '';
 	
 	 const handleUpload = async (file: File) => {
@@ -104,6 +104,39 @@ const uploadFileToAzureFunction = async (file: File | null): Promise<string> => 
 	return upload(file);
 };
 
+const uploadFileToAzureFunctionIsHuman = async (file: File | null): Promise<string> => {
+	if (!file) return '';
+	
+	const toBase64 = (file : File)  => new Promise((resolve, reject) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = () => resolve(reader.result);
+		reader.onerror = error => reject(error);
+	});
+	
+	const b64 = await toBase64(file) as string; 
+	
+	const upload = (file: File) : Promise<string> => {
+	  return fetch('https://tribes-function.azurewebsites.net/api/HttpTrigger2?code=pdE1lXisLEUmsY3BOe6A8MBFPCaFavjA9scEsboPQjhUAzFuOSk6kQ==', { // Your POST endpoint
+		method: 'POST',
+		headers: {
+		  // Content-Type may need to be completely **omitted**
+		  // or you may need something
+		  "Content-Type": "*"
+		},
+		body: b64 // This is your file object
+	  }).then(
+		response => response.text() // if the response is a JSON object
+	  ).then(
+		success => success // Handle the success response object
+	  ).catch(
+		error => "" // Handle the error response object
+	  );
+	};
+	
+	return upload(file);
+};
+
 /*export default uploadFileToBlob;*/
-export default uploadFileToAzureFunction;
+export {uploadFileToAzureFunctionEmotion, uploadFileToAzureFunctionIsHuman};
 
