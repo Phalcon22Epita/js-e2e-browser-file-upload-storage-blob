@@ -9,7 +9,7 @@ const storageConfigured = isStorageConfigured();
 
 const App = (): JSX.Element => {
   // all blobs in container
-  const [blobList, setBlobList] = useState<string[]>([]);
+  const [blobList, ] = useState<string[]>([]);
   const [probas, setProbas] = useState('');
 
   // current file to upload into container
@@ -76,7 +76,7 @@ const App = (): JSX.Element => {
   const extractProba = () : string => {
 	  var test = "";
 	  const probList = JSON.parse(probas);
-	  probList.forEach((elt : any) => test += elt["tagName"] + ': ' + (Math.round(elt["probability"] * 100)) + '%' + '\n');
+	  probList.forEach((elt : any) => test += elt["tagName"] + ': ' + (Math.round(elt["probability"] * 100)) + '%\n');
 	  return test;
   };
   

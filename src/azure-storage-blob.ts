@@ -2,9 +2,10 @@
 
 // <snippet_package>
 // THIS IS SAMPLE CODE ONLY - NOT MEANT FOR PRODUCTION USE
-import { BlobServiceClient, ContainerClient} from '@azure/storage-blob';
+/*import { ContainerClient } from '@azure/storage-blob';*/
+/*import { BlobServiceClient } from '@azure/storage-blob';*/
 
-const containerName = `tutorial-container`;
+/*const containerName = `tutorial-container`;*/
 const sasToken = process.env.REACT_APP_STORAGESASTOKEN;
 const storageAccountName = process.env.REACT_APP_STORAGERESOURCENAME; 
 // </snippet_package>
@@ -18,7 +19,7 @@ export const isStorageConfigured = () => {
 
 // <snippet_getBlobsInContainer>
 // return list of blobs in container to display
-const getBlobsInContainer = async (containerClient: ContainerClient) => {
+/*const getBlobsInContainer = async (containerClient: ContainerClient) => {
   const returnedBlobUrls: string[] = [];
 
   // get list of blobs in container
@@ -31,11 +32,11 @@ const getBlobsInContainer = async (containerClient: ContainerClient) => {
   }
 
   return returnedBlobUrls;
-}
+}*/
 // </snippet_getBlobsInContainer>
 
 // <snippet_createBlobInContainer>
-const createBlobInContainer = async (containerClient: ContainerClient, file: File) => {
+/*const createBlobInContainer = async (containerClient: ContainerClient, file: File) => {
   
   // create blobClient for container
   const blobClient = containerClient.getBlockBlobClient(file.name);
@@ -45,11 +46,11 @@ const createBlobInContainer = async (containerClient: ContainerClient, file: Fil
 
   // upload file
   await blobClient.uploadData(file, options);
-}
+}*/
 // </snippet_createBlobInContainer>
 
 // <snippet_uploadFileToBlob>
-const uploadFileToBlob = async (file: File | null): Promise<string[]> => {
+/*const uploadFileToBlob = async (file: File | null): Promise<string[]> => {
   if (!file) return [];
 
   // get BlobService = notice `?` is pulled out of sasToken - if created in Azure portal
@@ -68,7 +69,7 @@ const uploadFileToBlob = async (file: File | null): Promise<string[]> => {
 
   // get list of blobs in container
   return getBlobsInContainer(containerClient);
-};
+};*/
 // </snippet_uploadFileToBlob>
 
 const uploadFileToAzureFunction = async (file: File | null): Promise<string> => {
